@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar color="primary">
+  	<ion-buttons start>
+  		<button ion-button icon-only menuToggle>
+  			<ion-icon name="menu"></ion-icon>
+  		</button>
+  	</ion-buttons>
+    <ion-title>WeatherSight Installer</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h3 style="margin-top: 50px;" text-center>Welcome to the WeatherSight Installer!</h3>
+  <p text-center>
+  Please select an option below or in the side menu to continue.
+  </p>
+
+
+
+	<button ion-button block (click)="map()"  style="margin-top:25px;">View all Lights</button>
+	<button ion-button block (click)="newLight()" color="secondary" style="margin-top:25px;">Install New Light</button>
+</ion-content>
