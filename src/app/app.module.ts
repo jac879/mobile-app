@@ -5,11 +5,19 @@ import { HomePage } from '../pages/home/home';
 import { SigninPage } from '../pages/signin/signin';
 import { SignupPage } from '../pages/signup/signup';
 import { NewlightPage } from '../pages/newlight/newlight';
+import { SetLightLocationPage } from '../pages/set-light-location/set-light-location';
 import { MapPage } from '../pages/map/map';
+
+
+import { ConfirmLightPage } from '../pages/confirm-light/confirm-light';
+
+
+import { AgmCoreModule } from "angular2-google-maps/core";
 
 
 
 import {AuthService } from '../services/auth';
+import {LightService } from '../services/light';
 import {DatabaseService } from '../services/database';
 
 @NgModule({
@@ -19,11 +27,16 @@ import {DatabaseService } from '../services/database';
     SigninPage,
     SignupPage,
     NewlightPage,
-    MapPage
+    MapPage,
+    SetLightLocationPage,
+    ConfirmLightPage
 
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAbIcwJu8I3kryc6Q5bvY-XYPsFjTqGwVk'
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -32,9 +45,11 @@ import {DatabaseService } from '../services/database';
     SigninPage,
     SignupPage,
     NewlightPage,
-    MapPage
+    MapPage,
+    SetLightLocationPage,
+    ConfirmLightPage
     
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService, DatabaseService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService, LightService, DatabaseService]
 })
 export class AppModule {}

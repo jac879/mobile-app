@@ -6,13 +6,22 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>map</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>my mapps</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+	<ion-grid>
+		<ion-row>
+			<ion-col>
+				<sebm-google-map [latitude]="location.lat" [longitude]="location.lng" [zoom]="9">
+
+				</sebm-google-map>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
 
 </ion-content>

@@ -13,6 +13,11 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class MapPage {
 
+  private location: any = {
+  	lat: 33.458772,
+  	lng: -88.832629
+  }
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {

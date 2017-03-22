@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Http, Response } from "@angular/http";
 import { AuthService } from "./auth";
+import { LightService } from "./light";
 
 import 'rxjs/Rx';
 
@@ -8,23 +9,72 @@ import 'rxjs/Rx';
 
 export class DatabaseService {
 
-	constructor(private http: Http, private authService: AuthService) {}
+    public userLights: any[] = [];
 
-	putData(token: string)
-	{
+    constructor(private http: Http, private authService: AuthService, private lightService: LightService) {}
 
-		const userId = this.authService.getActiveUser().uid;
+    putData(token: string) {
 
-		var test = {
-						hello : "asdasdf",
-						there : "qwerqwer"
-					}
-		//put overrides
-		//post merges
-		return this.http.put('https://weathersight-76387.firebaseio.com/' + userId + '/test.json?auth=' + token, test)
-		.map((response : Response) => {
-			return response.json();
-		});
-	}
+        //const userId = this.authService.getActiveUser().uid;
+
+        var packet = {
+                lightId: "aaa001"
+            }
+            //put overrides
+            //post merges
+        return this.http.post('http://weathersight.herokuapp.com/testsms', packet)
+            .map((response: Response) => {
+                return response.json();
+            });
+    }
+
+    getLight(token: string, light: string) {
+
+        //const userId = this.authService.getActiveUser().uid;
+
+        return this.http.get('https://weathersight-76387.firebaseio.com/lights/' + light + '.json?auth=' + token)
+            .map((response: Response) => {
+                return response.json();
+            });
+    }
+
+    talkToLight(token, lightId, lightSMS, command) {
+
+        //const userId = this.authService.getActiveUser().uid;
+
+        var packet = {
+                token: token,
+                lightId: lightId,
+                lightSms: lightSMS,
+                command: command
+            }
+            //put overrides
+            //post merges
+        return this.http.post('http://weathersight.herokuapp.com/sendsms', packet)
+            .map((response: Response) => {
+                return response.json();
+            });
+    }
+
+    saveLightToUser(token) {
+
+        const userId = this.authService.getActiveUser().uid;
+
+        var location = '';
+
+        if(this.lightService.light.sms == '')
+        {
+        	location = '/slaves/';
+        }
+        else
+        {
+        	location = '/masters/';
+        }
+
+        return this.http.post('https://weathersight-76387.firebaseio.com/users/'+ userId + location + this.lightService.lightId + '.json?auth=' + token, this.lightService.getFinalLight())
+            .map((response: Response) => {
+                return response.json();
+            });
+    }
 
 }
