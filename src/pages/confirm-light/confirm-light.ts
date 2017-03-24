@@ -55,6 +55,7 @@ export class ConfirmLightPage {
                                 alert.present();
                             } else if (data.a == false) {
 
+                                
                                 this.databaseService.saveLightToUser(token)
                                     .subscribe(
                                         (data) => {

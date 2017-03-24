@@ -14,6 +14,7 @@ import { ConfirmLightPage } from '../confirm-light/confirm-light';
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
+
 @Component({
     selector: 'page-set-light-location',
     templateUrl: 'set-light-location.html'

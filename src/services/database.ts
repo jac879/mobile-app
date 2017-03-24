@@ -62,16 +62,31 @@ export class DatabaseService {
 
         var location = '';
 
-        if(this.lightService.light.sms == '')
-        {
-        	location = '/slaves/';
-        }
-        else
-        {
-        	location = '/masters/';
+        if (this.lightService.light.sms == '') {
+            location = '/slaves/';
+        } else {
+            location = '/masters/';
         }
 
-        return this.http.post('https://weathersight-76387.firebaseio.com/users/'+ userId + location + this.lightService.lightId + '.json?auth=' + token, this.lightService.getFinalLight())
+        return this.http.put('https://weathersight-76387.firebaseio.com/users/' + userId + location + this.lightService.lightId + '.json?auth=' + token, this.lightService.getFinalLight())
+            .map((response: Response) => {
+                return response.json();
+            });
+    }
+
+    getLights(token, type) {
+
+        const userId = this.authService.getActiveUser().uid;
+
+        var location = '';
+
+        if (type == 'slaves') {
+            location = '/slaves';
+        } else {
+            location = '/masters';
+        }
+
+        return this.http.get('https://weathersight-76387.firebaseio.com/users/' + userId + location + '.json?auth=' + token)
             .map((response: Response) => {
                 return response.json();
             });

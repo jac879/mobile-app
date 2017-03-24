@@ -6,22 +6,91 @@
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
-    <ion-title>my mapps</ion-title>
-  </ion-navbar>
+    <ion-navbar color="primary">
+        <ion-title>my lights</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-	<ion-grid>
-		<ion-row>
-			<ion-col>
-				<sebm-google-map [latitude]="location.lat" [longitude]="location.lng" [zoom]="9">
+<ion-content>
 
-				</sebm-google-map>
-			</ion-col>
-		</ion-row>
-	</ion-grid>
+    <ion-grid padding>
+        <ion-row>
+            <ion-col>
+                <sebm-google-map [latitude]="location.lat" [longitude]="location.lng" [zoom]="9">
 
+
+                    <sebm-google-map-marker *ngFor="let marker of lightService.userMasterLights;" [latitude]="marker.location.lat" [longitude]="marker.location.lng" (markerClick)="openLight(marker.lightId, 'master')" [iconUrl]="'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'"></sebm-google-map-marker>
+                </sebm-google-map>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+
+    <ion-list>
+        <ion-item-divider color="light">
+            <ion-avatar item-left style="margin: 8px 0px 8px 0;">
+                <img style="height: 25px; width: 25px;  margin-top: 8px;" src="https://maps.google.com/mapfiles/ms/icons/blue-dot.png">
+            </ion-avatar>Master Lights</ion-item-divider>
+
+            <button ion-item center *ngIf="lightService.userMasterLights.length == 0">
+               	No Master Lights Found.
+            </button>
+        <ion-item-sliding *ngFor="let marker of lightService.userMasterLights;">
+            <ion-item (click)="openLight(marker.lightId, 'master')">
+
+                <h2>Light {{marker.lightId}}</h2>
+            </ion-item>
+            <ion-item-options side="left">
+                <button ion-button color="primary">
+                    <ion-icon name="text"></ion-icon>
+                    Text
+                </button>
+                <button ion-button color="secondary">
+                    <ion-icon name="call"></ion-icon>
+                    Call
+                </button>
+            </ion-item-options>
+            <ion-item-options side="right">
+                <button ion-button color="primary">
+                    <ion-icon name="mail"></ion-icon>
+                    Email
+                </button>
+            </ion-item-options>
+        </ion-item-sliding>
+
+        <ion-item-divider color="light">
+            <ion-avatar item-left style="margin: 8px 0px 8px 0;">
+                <img style="height: 25px; width: 25px;  margin-top: 8px;" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png">
+            </ion-avatar>Slave Lights</ion-item-divider>
+
+            <button ion-item center *ngIf="lightService.userSlaveLights.length == 0">
+               	No Slave Lights Found.
+            </button>
+        <ion-item-sliding *ngFor="let marker of lightService.userSlaveLights;">
+
+            <ion-item (click)="openLight()">
+
+                <h2>Light {{marker.lightId}}</h2>
+            </ion-item>
+            <ion-item-options side="left">
+                <button ion-button color="primary">
+                    <ion-icon name="text"></ion-icon>
+                    Text
+                </button>
+                <button ion-button color="secondary">
+                    <ion-icon name="call"></ion-icon>
+                    Call
+                </button>
+            </ion-item-options>
+            <ion-item-options side="right">
+                <button ion-button color="primary">
+                    <ion-icon name="mail"></ion-icon>
+                    Email
+                </button>
+            </ion-item-options>
+        </ion-item-sliding>
+
+    </ion-list>
 </ion-content>

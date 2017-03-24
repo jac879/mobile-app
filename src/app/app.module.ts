@@ -7,6 +7,7 @@ import { SignupPage } from '../pages/signup/signup';
 import { NewlightPage } from '../pages/newlight/newlight';
 import { SetLightLocationPage } from '../pages/set-light-location/set-light-location';
 import { MapPage } from '../pages/map/map';
+import { SpecificLightPage } from '../pages/specific-light/specific-light';
 
 
 import { ConfirmLightPage } from '../pages/confirm-light/confirm-light';
@@ -29,7 +30,8 @@ import {DatabaseService } from '../services/database';
     NewlightPage,
     MapPage,
     SetLightLocationPage,
-    ConfirmLightPage
+    ConfirmLightPage,
+    SpecificLightPage
 
   ],
   imports: [
@@ -47,7 +49,8 @@ import {DatabaseService } from '../services/database';
     NewlightPage,
     MapPage,
     SetLightLocationPage,
-    ConfirmLightPage
+    ConfirmLightPage,
+    SpecificLightPage
     
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService, LightService, DatabaseService]
