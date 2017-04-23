@@ -14,22 +14,16 @@ import { MapPage } from '../map/map';
 export class HomePage {
 
   constructor(public navCtrl: NavController, private authService: AuthService, private databaseService: DatabaseService) {
+
+    var test = "aaa001_23_432_23.03_23_";
+    console.log(test);
+    var arr = test.split("_");
+
+    console.log(arr);
     
   }
 
-  test(){
-
-  	this.authService.getToken()
-  	.then((token) => {
-  		this.databaseService.putData(token)
-  		.subscribe(
-  			() => { console.log("SUSSSESS"); },
-  			error => { console.log(error) }
-  			);
-
-  	})
-
-  }
+  
 
   map()
   {

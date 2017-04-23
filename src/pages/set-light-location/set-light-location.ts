@@ -7,6 +7,7 @@ import { AuthService } from "../../services/auth";
 import { LightService } from "../../services/light";
 
 import { ConfirmLightPage } from '../confirm-light/confirm-light';
+import { SelectMasterLightPage } from '../select-master-light/select-master-light';
 
 /*
   Generated class for the SetLightLocation page.
@@ -76,49 +77,54 @@ export class SetLightLocationPage {
         })
 
         loading.present();
-        this.authService.getToken()
-            .then((token) => {
-                this.databaseService.talkToLight(token, this.lightService.lightId, this.lightService.light.sms, 'blinkbw')
-                    .subscribe(
-                        (data) => {
-                            loading.dismiss();
-                            if (data == null) {
+
+        if (this.lightService.light.sms == '') {
+            loading.dismiss();
+            this.navCtrl.push(SelectMasterLightPage);
+        } else {
+            this.authService.getToken()
+                .then((token) => {
+                    this.databaseService.talkToLight(token, this.lightService.lightId, this.lightService.light.sms, '_1_')
+                        .subscribe(
+                            (data) => {
+                                loading.dismiss();
+                                if (data == null) {
+
+                                    const alert = this.alertCtrl.create({
+                                        title: 'Error',
+                                        message: "Fatal Error, please start over.",
+                                        buttons: ['ok']
+                                    });
+                                    alert.present();
+                                } else if (data.a == true) {
+
+                                    const alert = this.alertCtrl.create({
+                                        title: 'Error',
+                                        message: "There was an error.",
+                                        buttons: ['ok']
+                                    });
+                                    alert.present();
+                                } else if (data.a == false) {
+
+                                    this.navCtrl.push(ConfirmLightPage);
+                                }
+
+                            },
+                            (error) => {
+                                console.log(error);
+                                loading.dismiss();
 
                                 const alert = this.alertCtrl.create({
                                     title: 'Error',
-                                    message: "Fatal Error, please start over.",
+                                    message: "There was an error connecting to the database.  Please check your network connection and try again.",
                                     buttons: ['ok']
                                 });
                                 alert.present();
-                            } else if (data.a == true) {
-
-                                const alert = this.alertCtrl.create({
-                                    title: 'Error',
-                                    message: "There was an error.",
-                                    buttons: ['ok']
-                                });
-                                alert.present();
-                            } else if (data.a == false) {
-
-                                this.navCtrl.push(ConfirmLightPage);
                             }
+                        );
 
-                        },
-                        (error) => {
-                            console.log(error);
-                            loading.dismiss();
-
-                            const alert = this.alertCtrl.create({
-                                title: 'Error',
-                                message: "There was an error connecting to the database.  Please check your network connection and try again.",
-                                buttons: ['ok']
-                            });
-                            alert.present();
-                        }
-                    );
-
-            })
-
+                })
+        }
     }
 
 }

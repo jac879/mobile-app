@@ -64,11 +64,42 @@ export class DatabaseService {
 
         if (this.lightService.light.sms == '') {
             location = '/slaves/';
+
+            this.lightService.light['masterSms'] = this.lightService.specificLight.sms;
+            this.lightService.light['masterId'] = this.lightService.specificLightId;
+            
         } else {
             location = '/masters/';
         }
 
-        return this.http.put('https://weathersight-76387.firebaseio.com/users/' + userId + location + this.lightService.lightId + '.json?auth=' + token, this.lightService.getFinalLight())
+        return this.http.patch('https://weathersight-76387.firebaseio.com/users/' + userId + location + this.lightService.lightId + '.json?auth=' + token, this.lightService.getFinalLight())
+            .map((response: Response) => {
+                return response.json();
+            });
+    }
+
+    saveSlaveToMaster(token) {
+
+        const userId = this.authService.getActiveUser().uid;
+
+        var test = {};
+        test[this.lightService.lightId] = this.lightService.lightId;
+
+        return this.http.put('https://weathersight-76387.firebaseio.com/users/' + userId + '/masters/' + this.lightService.specificLightId + '/slaves/' + '.json?auth=' + token, test)
+            .map((response: Response) => {
+                return response.json();
+            });
+    }
+
+    markLightAsUsed(token, lightId) {
+
+        const userId = this.authService.getActiveUser().uid;
+
+        var location = this.lightService.getFinalLight();
+
+        location['used'] = true;
+
+        return this.http.patch('https://weathersight-76387.firebaseio.com/lights/' + lightId + '.json?auth=' + token, location)
             .map((response: Response) => {
                 return response.json();
             });

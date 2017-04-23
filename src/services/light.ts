@@ -31,6 +31,7 @@ export class LightService {
         active: false,
         emergency: false,
         sms: '',
+        masterSms: '',
         slaves: {},
         owner: this.userId
 
@@ -57,6 +58,9 @@ export class LightService {
     }
 
     newLight(id, sms, uid) {
+
+        this.clearLight(); 
+        
         this.lightId = id;
         this.light.sms = sms;
         this.light.owner = uid;

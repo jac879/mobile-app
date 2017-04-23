@@ -11,6 +11,7 @@ import { SpecificLightPage } from '../pages/specific-light/specific-light';
 
 
 import { ConfirmLightPage } from '../pages/confirm-light/confirm-light';
+import { SelectMasterLightPage } from '../pages/select-master-light/select-master-light';
 
 
 import { AgmCoreModule } from "angular2-google-maps/core";
@@ -31,7 +32,8 @@ import {DatabaseService } from '../services/database';
     MapPage,
     SetLightLocationPage,
     ConfirmLightPage,
-    SpecificLightPage
+    SpecificLightPage,
+    SelectMasterLightPage
 
   ],
   imports: [
@@ -50,7 +52,8 @@ import {DatabaseService } from '../services/database';
     MapPage,
     SetLightLocationPage,
     ConfirmLightPage,
-    SpecificLightPage
+    SpecificLightPage,
+    SelectMasterLightPage
     
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService, LightService, DatabaseService]

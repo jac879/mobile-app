@@ -7,7 +7,7 @@
 <ion-header>
 
     <ion-navbar color="primary">
-        <ion-title>my lights</ion-title>
+        <ion-title>View All Lights</ion-title>
     </ion-navbar>
 
 </ion-header>
@@ -18,11 +18,21 @@
     <ion-grid padding>
         <ion-row>
             <ion-col>
-                <sebm-google-map [latitude]="location.lat" [longitude]="location.lng" [zoom]="9">
+                <ion-card>
 
 
-                    <sebm-google-map-marker *ngFor="let marker of lightService.userMasterLights;" [latitude]="marker.location.lat" [longitude]="marker.location.lng" (markerClick)="openLight(marker.lightId, 'master')" [iconUrl]="'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'"></sebm-google-map-marker>
-                </sebm-google-map>
+                    <ion-card-content style="padding: 0;">
+                        <!-- Add card content here! -->
+
+                        <sebm-google-map [latitude]="location.lat" [longitude]="location.lng" [zoom]="17">
+
+
+                            <sebm-google-map-marker *ngFor="let marker of lightService.userMasterLights;" [latitude]="marker.location.lat" [longitude]="marker.location.lng" (markerClick)="openLight(marker.lightId, 'master')" [iconUrl]="'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'"></sebm-google-map-marker>
+                            <sebm-google-map-marker *ngFor="let marker of lightService.userSlaveLights;" [latitude]="marker.location.lat" [longitude]="marker.location.lng" (markerClick)="openLight(marker.lightId, 'slave')"></sebm-google-map-marker>
+                        </sebm-google-map>
+                    </ion-card-content>
+
+                </ion-card>
             </ion-col>
         </ion-row>
     </ion-grid>
@@ -34,9 +44,9 @@
                 <img style="height: 25px; width: 25px;  margin-top: 8px;" src="https://maps.google.com/mapfiles/ms/icons/blue-dot.png">
             </ion-avatar>Master Lights</ion-item-divider>
 
-            <button ion-item center *ngIf="lightService.userMasterLights.length == 0">
-               	No Master Lights Found.
-            </button>
+        <button ion-item center *ngIf="lightService.userMasterLights.length == 0">
+            No Master Lights Found.
+        </button>
         <ion-item-sliding *ngFor="let marker of lightService.userMasterLights;">
             <ion-item (click)="openLight(marker.lightId, 'master')">
 
@@ -65,12 +75,12 @@
                 <img style="height: 25px; width: 25px;  margin-top: 8px;" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png">
             </ion-avatar>Slave Lights</ion-item-divider>
 
-            <button ion-item center *ngIf="lightService.userSlaveLights.length == 0">
-               	No Slave Lights Found.
-            </button>
+        <button ion-item center *ngIf="lightService.userSlaveLights.length == 0">
+            No Slave Lights Found.
+        </button>
         <ion-item-sliding *ngFor="let marker of lightService.userSlaveLights;">
 
-            <ion-item (click)="openLight()">
+            <ion-item (click)="openLight(marker.lightId,'slave')">
 
                 <h2>Light {{marker.lightId}}</h2>
             </ion-item>

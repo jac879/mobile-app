@@ -14,23 +14,30 @@
 
 
 <ion-content padding>
-    <h3 style="margin-top: 50px;" text-center>Please mark the location of this light.</h3>
-    <p text-center>
-    	You may either select the location on the map or use this phone's GPS location.
-    </p>
+
     <ion-grid>
         <ion-row>
-            <ion-col>
-                <sebm-google-map [latitude]="location.lat" [longitude]="location.lng" [zoom]="9" (mapClick)="onSetMarker($event)">
+            <ion-col col-lg-2 col-md-1></ion-col>
+            <ion-col col-12 col-sm-12 col-md-10 col-lg-8>
+                <h3 style="margin-top: 20px;" text-center>Please mark the location of this light.</h3>
+                <p text-center>
+                    You may either select the location on the map or use this phone's GPS location.
+                </p>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <sebm-google-map [latitude]="location.lat" [longitude]="location.lng" [zoom]="9" (mapClick)="onSetMarker($event)">
 
-                    <sebm-google-map-marker [latitude]="marker.lat" [longitude]="marker.lng" *ngIf="marker"></sebm-google-map-marker>
-                </sebm-google-map>
+                                <sebm-google-map-marker [latitude]="marker.lat" [longitude]="marker.lng" *ngIf="marker"></sebm-google-map-marker>
+                            </sebm-google-map>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+
+                <button ion-button block color="secondary" (click)="useGPS()">Use Phone GPS Location</button>
+
+                <button ion-button block color="primary" [disabled]="!marker" (click)="continue()" style="margin-top:10px;">continue</button>
             </ion-col>
         </ion-row>
     </ion-grid>
-
-    <button ion-button block color="secondary" (click)="useGPS()">Use Phone GPS Location</button>
-
-    <button ion-button block color="primary" [disabled]="!marker" (click)="continue()" style="margin-top:10px;">continue</button>
-
 </ion-content>

@@ -23,7 +23,58 @@ export class NewlightPage {
     constructor(private databaseService: DatabaseService, private lightService: LightService, private authService: AuthService, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public alertCtrl: AlertController) {}
 
     ionViewDidLoad() {
-        console.log('ionViewDidLoad NewlightPage');
+        console.log('ionViewDidLoad MapPage');
+
+        const loading = this.loadingCtrl.create({
+            content: "Updating Light Data..."
+        });
+
+        loading.present();
+        this.authService.getToken()
+            .then((token) => {
+                this.databaseService.getLights(token, 'master')
+                    .subscribe(
+                        (data) => {
+                            loading.dismiss();
+                            this.lightService.userMasterLights = [];
+                            this.lightService.userSlaveLights = [];
+                            if (data == null) {
+
+                                /*const alert = this.alertCtrl.create({
+                                    title: 'Error',
+                                    message: "Fatal Error, please start over.",
+                                    buttons: ['ok']
+                                });
+                                alert.present();*/
+                            } else {
+
+                                for (var j in data) {
+                                    data[j]['lightId'] = j;
+                                    if (data[j].sms == null) {
+
+                                        this.lightService.userSlaveLights.push(data[j]);
+                                    } else {
+
+                                        this.lightService.userMasterLights.push(data[j]);
+                                    }
+                                }
+                            }
+                        },
+                        (error) => {
+                            console.log(error);
+                            loading.dismiss();
+
+                            const alert = this.alertCtrl.create({
+                                title: 'Error',
+                                message: "There was an error connecting to the database.  Please check your network connection and try again.",
+                                buttons: ['ok']
+                            });
+                            alert.present();
+                        }
+                    );
+
+            })
+
     }
 
     onNewLight(form: NgForm) {
@@ -56,19 +107,27 @@ export class NewlightPage {
                                     buttons: ['ok']
                                 });
                                 alert.present();
-                            }
-                            else if(data.used == false){
+                            } else if (data.used == false) {
 
-                            	if(data.sms != null)
-                            	{
+                                if (data.sms != null) {
 
-                            		this.lightService.newLight(form.value.light, data.sms, this.authService.getActiveUser().uid);
-                            		this.navCtrl.push(SetLightLocationPage);
-                            	}
-                            	else
-                            	{
-                            		
-                            	}
+                                    this.lightService.newLight(form.value.light, data.sms, this.authService.getActiveUser().uid);
+                                    this.navCtrl.push(SetLightLocationPage);
+                                } else {
+                                    if (this.lightService.userMasterLights.length == 0) {
+
+                                        const alert = this.alertCtrl.create({
+                                            title: 'Error',
+                                            message: "You are trying to install a slave light but do not have any master lights to connect it to.  Please install a master light before installing any slave lights.",
+                                            buttons: ['ok']
+                                        });
+                                        alert.present();
+                                    } else {
+
+                                        this.lightService.newLight(form.value.light, '', this.authService.getActiveUser().uid);
+                                        this.navCtrl.push(SetLightLocationPage);
+                                    }
+                                }
                             }
 
                         },
@@ -76,13 +135,12 @@ export class NewlightPage {
                             console.log(error);
                             loading.dismiss();
 
-
-                                const alert = this.alertCtrl.create({
-                                    title: 'Error',
-                                    message: "There was an error connecting to the database.  Please check your network connection and try again.",
-                                    buttons: ['ok']
-                                });
-                                alert.present();
+                            const alert = this.alertCtrl.create({
+                                title: 'Error',
+                                message: "There was an error connecting to the database.  Please check your network connection and try again.",
+                                buttons: ['ok']
+                            });
+                            alert.present();
                         }
                     );
 

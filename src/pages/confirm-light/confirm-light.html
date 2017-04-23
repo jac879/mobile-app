@@ -14,14 +14,25 @@
 
 
 <ion-content padding>
-    <h3 style="margin-top: 50px;" text-center>We need to confirm your light is connected to our network. A confirmation signal has been sent to your light.</h3>
-    <p text-center style="margin-top: 15px;">
-         Please wait 10 - 30 seconds and tell us what you see.
-    </p>
 
-    <button ion-button block color="primary" (click)="lightGood()" style="margin-top:15px;">Light is blinking blue and white</button>
-    
-    <button ion-button block color="danger" (click)="lightBad()" style="margin-top:15px;">Light is just fading.</button>
 
+    <ion-grid>
+        <ion-row>
+            <ion-col col-lg-2 col-md-1></ion-col>
+            <ion-col col-12 col-sm-12 col-md-10 col-lg-8>
+                <h3 style="margin-top: 20px;" text-center>We need to confirm your light is connected to our network. A confirmation signal has been sent to your light.</h3>
+                <p text-center style="margin-top: 15px;">
+                    Please wait 10 - 30 seconds and tell us what you see.
+                </p>
+
+
+                <button *ngIf="lightService.light.sms == ''" ion-button block color="primary" (click)="lightGood()" style="margin-top:15px;">Both lights are blinking blue and white</button>
+
+                <button ion-button block color="primary" (click)="radioBad()" style="margin-top:15px;">Master Light is blinking blue and white</button>
+
+                <button ion-button block color="danger" (click)="lightBad()" style="margin-top:15px;">Light is just fading.</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 
 </ion-content>

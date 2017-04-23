@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
@@ -23,18 +24,53 @@ export class ConfirmLightPage {
         console.log('ionViewDidLoad ConfirmLightPage');
     }
 
+    radioBad() {
+
+        if (this.lightService.light.sms != '') {
+            this.lightGood();
+        } else {
+            console.log("radio bad");
+            let confirm = this.alertCtrl.create({
+                title: 'Radio Bad Config',
+                message: 'If your master light is flashing but your slave light is not, you probably have a bad radio connection.  Please make sure your slave light has a unobstructed view less than 300ft and resend the connection code.',
+                buttons: [{
+                    text: 'Cancel',
+                    handler: () => {
+                        console.log('Disagree clicked');
+                    }
+                }, {
+                    text: 'Resend',
+                    handler: () => {
+                        console.log('Agree clicked');
+                        this.lightBad();
+                    }
+                }]
+            });
+            confirm.present();
+        }
+    }
+
     lightGood() {
         console.log("bad light");
         const loading = this.loadingCtrl.create({
             content: "Connecting to Light..."
         })
 
+        if (this.lightService.light.sms == '') {
+            var sms = this.lightService.specificLight.sms
+            var slave = true;
+        } else {
+            sms = this.lightService.light.sms;
+            slave = false;
+        }
+
         loading.present();
         this.authService.getToken()
             .then((token) => {
-                this.databaseService.talkToLight(token, this.lightService.lightId, this.lightService.light.sms, 'active')
+                this.databaseService.talkToLight(token, this.lightService.lightId, sms, '_2_')
                     .subscribe(
                         (data) => {
+
                             if (data == null) {
 
                                 loading.dismiss();
@@ -52,13 +88,43 @@ export class ConfirmLightPage {
                                     message: "There was an error.",
                                     buttons: ['ok']
                                 });
+
                                 alert.present();
+
                             } else if (data.a == false) {
 
-                                
                                 this.databaseService.saveLightToUser(token)
                                     .subscribe(
                                         (data) => {
+                                            console.log(data);
+
+                                            this.databaseService.markLightAsUsed(token, this.lightService.lightId)
+                                                .subscribe(
+                                                    (data) => {
+
+                                                        console.log("works");
+                                                        console.log(data);
+
+                                                    },
+                                                    (err) => {
+
+                                                        console.log(err);
+                                                    }
+                                                );
+
+                                            if (slave) {
+                                                this.databaseService.saveSlaveToMaster(token)
+                                                    .subscribe(
+                                                        (data) => {
+                                                            console.log(data);
+
+                                                        },
+                                                        (err) => {
+
+                                                            console.log(err);
+                                                        }
+                                                    );
+                                            }
                                             loading.dismiss();
                                             const alert = this.alertCtrl.create({
                                                 title: 'Light Connected Successfully!',
@@ -104,10 +170,20 @@ export class ConfirmLightPage {
             content: "Connecting to Light..."
         })
 
+        if (this.lightService.light.sms == '') {
+            var id = this.lightService.specificLightId;
+            var sms = this.lightService.specificLight.sms;
+            var message = "_7_2_";
+        } else {
+            id = this.lightService.lightId;
+            sms = this.lightService.light.sms;
+            message = "_1_"
+        }
+
         loading.present();
         this.authService.getToken()
             .then((token) => {
-                this.databaseService.talkToLight(token, this.lightService.lightId, this.lightService.light.sms, 'blinkbw')
+                this.databaseService.talkToLight(token, id, sms, message)
                     .subscribe(
                         (data) => {
                             loading.dismiss();
