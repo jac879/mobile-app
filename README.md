@@ -1,3 +1,3 @@
-# HEROKU SERVER FOR WEATHERSIGHT
+# MOBILE APP FOR WEATHERSIGHT
 
-This node server is based on heroku's node server tutorial.  Firebase and nexmo has been added. All relevant code is located in the index.js file.
+This mobile app is written in angular2 with the ionic2 framework.  all relevant code is located in the src folder.
