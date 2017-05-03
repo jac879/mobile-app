@@ -84,7 +84,7 @@ export class SetLightLocationPage {
         } else {
             this.authService.getToken()
                 .then((token) => {
-                    this.databaseService.talkToLight(token, this.lightService.lightId, this.lightService.light.sms, '_1_')
+                    this.databaseService.talkToLight(token, this.lightService.lightId, this.lightService.light.sms, '_1_$')
                         .subscribe(
                             (data) => {
                                 loading.dismiss();

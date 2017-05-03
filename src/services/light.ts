@@ -32,6 +32,7 @@ export class LightService {
         emergency: false,
         sms: '',
         masterSms: '',
+        masterId: '',
         slaves: {},
         owner: this.userId
 

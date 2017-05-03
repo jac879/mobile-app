@@ -35,7 +35,7 @@ export class SelectMasterLightPage {
         loading.present();
         this.authService.getToken()
             .then((token) => {
-                this.databaseService.talkToLight(token, id, this.lightService.specificLight.sms, '_7_2_')
+                this.databaseService.talkToLight(token, id, this.lightService.specificLight.sms, '_7_2_$')
                     .subscribe(
                         (data) => {
                             loading.dismiss();

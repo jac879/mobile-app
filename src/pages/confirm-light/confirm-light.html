@@ -26,11 +26,11 @@
                 </p>
 
 
-                <button *ngIf="lightService.light.sms == ''" ion-button block color="primary" (click)="lightGood()" style="margin-top:15px;">Both lights are blinking blue and white</button>
+                <button *ngIf="lightService.light.sms == ''" ion-button block color="primary" (click)="lightGood()" style="margin-top:15px;">Both lights are blue.</button>
 
-                <button ion-button block color="primary" (click)="radioBad()" style="margin-top:15px;">Master Light is blinking blue and white</button>
+                <button ion-button block color="primary" (click)="radioBad()" style="margin-top:15px;">Master Light is Blue.</button>
 
-                <button ion-button block color="danger" (click)="lightBad()" style="margin-top:15px;">Light is just fading.</button>
+                <button ion-button block color="danger" (click)="lightBad()" style="margin-top:15px;">Master Light is Red.</button>
             </ion-col>
         </ion-row>
     </ion-grid>

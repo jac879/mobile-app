@@ -57,9 +57,11 @@ export class ConfirmLightPage {
         })
 
         if (this.lightService.light.sms == '') {
+            var id = this.lightService.specificLightId;
             var sms = this.lightService.specificLight.sms
             var slave = true;
         } else {
+            id = this.lightService.lightId;
             sms = this.lightService.light.sms;
             slave = false;
         }
@@ -67,7 +69,7 @@ export class ConfirmLightPage {
         loading.present();
         this.authService.getToken()
             .then((token) => {
-                this.databaseService.talkToLight(token, this.lightService.lightId, sms, '_2_')
+                this.databaseService.talkToLight(token, id, sms, '_2_$')
                     .subscribe(
                         (data) => {
 
@@ -173,11 +175,11 @@ export class ConfirmLightPage {
         if (this.lightService.light.sms == '') {
             var id = this.lightService.specificLightId;
             var sms = this.lightService.specificLight.sms;
-            var message = "_7_2_";
+            var message = "_7_2_$";
         } else {
             id = this.lightService.lightId;
             sms = this.lightService.light.sms;
-            message = "_1_"
+            message = "_1_$"
         }
 
         loading.present();
